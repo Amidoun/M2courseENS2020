@@ -80,48 +80,42 @@ ssh -XY <login>@core.cluster.france-bioinformatique.fr
 ### 2 - Set up your working environment
 1. Go to your working directory
 ```bash
-cd /shared/projects/ens_m2_2019/<login>
+cd ~
 ```
-2. Load the conda virtual environment which contains all bioinformatics tools used to analyze ChIP-seq data.
-```bash
-module load conda
-source activate eba2018_chipseq
-```
-3. Start an interactive session
-```bash
-sinteractive
-```
-**These last 4 commands must be run each time you connect to the server**
 
-4. Create a directory that will contain all results of the upcoming analyses.
+2. Create a directory that will contain all results of the upcoming analyses.
 ```bash
 mkdir cours_chipseq
 ```
-5. Go to the newly created directory
+
+3. Go to the newly created directory
 ```bash
 cd cours_chipseq
 ```
 
-7. Copy the directory containing data for the practical. This creates a new folder named "practical" in your personal space 
+4. Copy the directory containing data for the practical. This creates a new folder named "practical" in your personal space 
 ```bash
-cp -r /shared/projects/ens_m2_2019/data/practical .
+cp -r /shared/projects/ens_hts_2020/Chip-seq/data .
 ```
 
-8. To have a more meaningful naming of the folder, rename this folder "data"
-```bash
-mv practical data
-```
-
-8. Your directory structure should be like this
+5. Ckeck the structure of your directory using `tree`. It should be like this
  ```
-/shared/projects/ens_m2_2019/<login>/cours_chipseq
-│
-└───data
-```
-If you wish, you can check this structure:
- ```
-cd /shared/projects/ens_m2_2019/<login>
-tree
+/shared/home/<login>/cours_chipseq
+└── data
+    ├── bowtie.slurm
+    ├── index
+    │   ├── make_mm9.sh
+    │   ├── mm9.1.ebwt
+    │   ├── mm9.2.ebwt
+    │   ├── mm9.3.ebwt
+    │   ├── mm9.4.ebwt
+    │   ├── mm9.rev.1.ebwt
+    │   └── mm9.rev.2.ebwt
+    └── practical
+        ├── Escherichia_coli_K12.fasta
+        ├── Escherichia_coli_K_12_MG1655.annotation.fixed.bed
+        ├── SRR576933.fastq.gz
+        └── SRR576938.fastq.gz
 ```
 
 ## Quality control of the reads and statistics <a name="qc"></a>
@@ -132,7 +126,6 @@ Before you analyze the data, it is crucial to check the quality of the data. We 
 
 1. Create a directory named **01-QualityControl** in which to output results from fastqc
 ```bash
-cd /shared/projects/ens_m2_2019/<login>/cours_chipseq
 mkdir 01-QualityControl
 ```
 2. Go to the directory you've just created
@@ -142,11 +135,23 @@ cd 01-QualityControl
 
 Your directory structure should be like this
  ```
-/shared/projects/ens_m2_2019/<login>/cours_chipseq
-│
-└───data
-│   
-└───01-QualityControl <- you should be in this folder
+.
+├── 01-QualityControl <- you should be in this folder
+└── data
+    ├── bowtie.slurm
+    ├── mouse_index
+    │   ├── make_mm9.sh
+    │   ├── mm9.1.ebwt
+    │   ├── mm9.2.ebwt
+    │   ├── mm9.3.ebwt
+    │   ├── mm9.4.ebwt
+    │   ├── mm9.rev.1.ebwt
+    │   └── mm9.rev.2.ebwt
+    └── practical
+        ├── Escherichia_coli_K12.fasta
+        ├── Escherichia_coli_K_12_MG1655.annotation.fixed.bed
+        ├── SRR576933.fastq.gz
+        └── SRR576938.fastq.gz
 ```
 3. Check the help page of the program to see its usage and parameters.
 
@@ -156,7 +161,7 @@ fastqc --help
 4. Launch the FASTQC program on the experiment file (SRR576933.fastq.gz)
   * -o: creates all output files in the specified output directory. '.' means current directory.
 ```bash
-fastqc ../data/SRR576933.fastq.gz -o .
+fastqc ~/cours_chipseq/data/practical/SRR576933.fastq.gz -o .
 ```  
 5. Wait until the analysis is finished. Check the files output by the program.
 ```bash
@@ -174,7 +179,7 @@ mkdir ~/Desktop/cours_chipseq
 cd ~/Desktop/cours_chipseq
 
 ## Download the file
-scp <login>@core.cluster.france-bioinformatique.fr:/shared/projects/ens_m2_2019/<login>/cours_chipseq/01-QualityControl/SRR576933_fastqc.html .
+scp <login>@core.cluster.france-bioinformatique.fr:~/cours_chipseq/01-QualityControl/SRR576933_fastqc.html .
 # Enter your password
 ```
 7. On your machine, open this file in Firefox.  
@@ -216,7 +221,7 @@ This prints the help of the program. However, this is a bit difficult to read ! 
 
 3. Create a directory named **02-Mapping** in which to output mapping results
 ```bash
-cd ..
+cd ~/cours_chipseq/
 mkdir 02-Mapping
 ```
 4. Go to the directory you've just created
@@ -242,11 +247,11 @@ bowtie-build
 5. Build the index for bowtie
 ```bash
 ## Creating genome index : provide the path to the genome file and the name to give to the index (Escherichia_coli_K12)
-bowtie-build ../../data/Escherichia_coli_K12.fasta Escherichia_coli_K12
+bowtie-build ~/cours_chipseq/data/practical/Escherichia_coli_K12.fasta Escherichia_coli_K12
 ```
 6. Go back to upper directory i.e 02-Mapping
 ```bash
-cd ..
+cd ~/cours_chipseq/02-Mapping
 ```
 
 ### 4 - Mapping the experiment
@@ -260,7 +265,7 @@ cd IP
 ```
 Your directory structure should be like this:
 ```
-/shared/projects/ens_m2_2019/<login>/cours_chipseq
+/shared/home/<login>/cours_chipseq
 │
 └───data
 │   
@@ -282,7 +287,7 @@ Your directory structure should be like this:
   * 2> SRR576933.out will output some statistics about the mapping in the file SRR576933.out
 ```bash  
 ## Run alignment
-bowtie ../index/Escherichia_coli_K12 ../../data/SRR576933.fastq.gz -v 2 -m 1 -3 1 -S 2> SRR576933.out > SRR576933.sam
+bowtie ~/cours_chipseq/02-Mapping/index/Escherichia_coli_K12 ~/cours_chipseq/data/practical/SRR576933.fastq.gz -v 2 -m 1 -3 1 -S 2> SRR576933.out > SRR576933.sam
 ```  
 This should take few minutes as we work with a small genome. For the human genome, we would need either more time and more resources.
 
@@ -318,7 +323,7 @@ Open the file SRR576938.out. How many reads were mapped?**
 
 1. Go to the directory with alignment file of treatment (IP)
 ```bash
-cd /shared/projects/ens_m2_2019/<login>/cours_chipseq/02-Mapping/IP
+cd ~/cours_chipseq/02-Mapping/IP
 ```
 2. Run Picard markDuplicates to mark duplicated reads (= reads mapping at the exact same location on the genome)
   * CREATE_INDEX: Create .bai file for the result bam file with marked duplicate reads
@@ -342,10 +347,9 @@ samtools flagstat Marked_SRR576933.bam
 ```
 
 
-Go back to working home directory (i.e /shared/projects/training/<login>/EBA2018_chipseq/)
+Go back to working home directory 
 ```bash
-## If you are in 02-Mapping/IP
-cd ../..
+cd ~/cours_chipseq
 ```
 
 ## Visualizing the data in a genome browser <a name="visualize"></a>
@@ -383,8 +387,9 @@ However, looking at BAM file as such does not allow to directly compare the two 
 ```bash
 bamCoverage --help
 ```
-2. Create a directory named **04-Visualization** to store bamCoverage outputs
+2. Create a directory named **03-Visualization** to store bamCoverage outputs
 ```bash
+cd ~/cours_chipseq
 mkdir 03-Visualization
 ```
 3. Go to the newly created directory
@@ -394,7 +399,7 @@ cd 03-Visualization
 
 Your directory structure should be like this:
 ```
-/shared/projects/ens_m2_2019/<login>/cours_chipseq
+~/cours_chipseq
 │
 └───data
 │   
@@ -418,7 +423,7 @@ Your directory structure should be like this:
   * --extendReads 200: Extend reads to fragment size
   * --ignoreDuplicates: reads that have the same orientation and start position will be considered only once
 ```bash
-bamCoverage --bam ../02-Mapping/IP/Marked_SRR576933.bam \
+bamCoverage --bam ~/cours_chipseq/02-Mapping/IP/Marked_SRR576933.bam \
 --outFileName SRR576933_nodup.bw --outFileFormat bigwig --effectiveGenomeSize 4639675 \
 --normalizeUsing RPGC --skipNonCoveredRegions --extendReads 200 --ignoreDuplicates
 ```
@@ -435,10 +440,12 @@ bamCoverage --bam ../02-Mapping/IP/Marked_SRR576933.bam \
 **Go back to the genes we looked at earlier: b1127, b1108. Look at the shape of the signal.**  
 **Keep IGV opened.**
 
-Go back to working home directory (i.e /shared/projects/ens_m2_2019/<login>/cours_chipseq)
+Go back to working home directory (i.e /shared/home/login/cours_chipseq)
 ```bash
 ## If you are in 03-Visualization
 cd ..
+# Else
+cd ~/cours_chipseq
 ```
 
 ## Peak calling with MACS <a name="macs"></a>
@@ -474,7 +481,7 @@ This prints the help of the program.
   * --diag is optional and increases the running time. It tests the saturation of the dataset, and gives an idea of how many peaks are found with subsets of the initial dataset.
   * &> MACS.out will output the verbosity (=information) in the file MACS.out
 ```bash
-macs -t ../02-Mapping/IP/SRR576933.bam -c ../02-Mapping/Control/SRR576938.bam --format BAM  --gsize 4639675 \
+macs -t ~/cours_chipseq/02-Mapping/IP/SRR576933.bam -c ~/cours_chipseq/02-Mapping/Control/SRR576938.bam --format BAM  --gsize 4639675 \
 --name "FNR_Anaerobic_A" --bw 400 --diag &> MACS.out
 ```
 3. This should take a few minutes, mainly because of the --diag option. Without, the program runs faster.
@@ -485,10 +492,12 @@ macs -t ../02-Mapping/IP/SRR576933.bam -c ../02-Mapping/Control/SRR576938.bam --
 
 **At this point, you should have a BED file containing the peak coordinates.**
 
-Go back to working home directory (i.e /shared/projects/ens_m2_2019/<login>/cours_chipseq)
+Go back to working home directory (i.e /shared/home/login/cours_chipseq)
 ```bash
 ## If you are in 04-PeakCalling
 cd ..
+# Else use
+cd ~/cours_chipseq
 ```
 
 ### 4 - Visualize peaks into IGV
