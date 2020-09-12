@@ -82,28 +82,24 @@ ssh -XY <login>@core.cluster.france-bioinformatique.fr
 ```bash
 cd ~
 ```
-
 2. Create a directory that will contain all results of the upcoming analyses.
 ```bash
 mkdir cours_chipseq
 ```
-
 3. Go to the newly created directory
 ```bash
 cd cours_chipseq
 ```
-
 4. Copy the directory containing data for the practical. This creates a new folder named "practical" in your personal space 
 ```bash
 cp -r /shared/projects/ens_hts_2020/Chip-seq/data .
 ```
-
 5. Ckeck the structure of your directory using `tree`. It should be like this
  ```
 /shared/home/<login>/cours_chipseq
 └── data
     ├── bowtie.slurm
-    ├── index
+    ├── mouse_index
     │   ├── make_mm9.sh
     │   ├── mm9.1.ebwt
     │   ├── mm9.2.ebwt
@@ -156,12 +152,13 @@ Your directory structure should be like this
 3. Check the help page of the program to see its usage and parameters.
 
 ```bash
+module load fastqc/0.11.8
 fastqc --help
 ```
 4. Launch the FASTQC program on the experiment file (SRR576933.fastq.gz)
   * -o: creates all output files in the specified output directory. '.' means current directory.
 ```bash
-fastqc ~/cours_chipseq/data/practical/SRR576933.fastq.gz -o .
+srun fastqc ~/cours_chipseq/data/practical/SRR576933.fastq.gz -o .
 ```  
 5. Wait until the analysis is finished. Check the files output by the program.
 ```bash
@@ -208,12 +205,13 @@ Do both FASTQ files contain enough reads for a proper analysis ?**
 **Goal**: Obtain the coordinates of each read on the reference genome.  
 
 ### 1 - Choosing a mapping program
-There are multiple programs to perform the mapping step. For reads produced by an Illumina machine for ChIP-seq, the currently "standard" programs are BWA and Bowtie (versions 1 and 2), and STAR is getting popular. We will use **Bowtie version 1.2.1.1** (Langmead B et al., Genome Biol, 2009) for this exercise, as this program remains effective for short reads (< 50bp).
+There are multiple programs to perform the mapping step. For reads produced by an Illumina machine for ChIP-seq, the currently "standard" programs are BWA and Bowtie (versions 1 and 2), and STAR is getting popular. We will use **Bowtie version 1.2.2** (Langmead B et al., Genome Biol, 2009) for this exercise, as this program remains effective for short reads (< 50bp).
 
 ### 2 - Bowtie
 1. Try out bowtie
 ```bash
-bowtie
+module load bowtie/1.2.2
+srun bowtie
 ```
 This prints the help of the program. However, this is a bit difficult to read ! If you need to know more about the program, it's easier to directly check the manual on the [website](http://bowtie-bio.sourceforge.net/manual.shtml).
 
@@ -242,12 +240,12 @@ cd index
 ```
 4. Try out bowtie-build
 ```bash
-bowtie-build
+srun bowtie-build
 ```
 5. Build the index for bowtie
 ```bash
 ## Creating genome index : provide the path to the genome file and the name to give to the index (Escherichia_coli_K12)
-bowtie-build ~/cours_chipseq/data/practical/Escherichia_coli_K12.fasta Escherichia_coli_K12
+srun bowtie-build ~/cours_chipseq/data/practical/Escherichia_coli_K12.fasta Escherichia_coli_K12
 ```
 6. Go back to upper directory i.e 02-Mapping
 ```bash
@@ -287,7 +285,7 @@ Your directory structure should be like this:
   * 2> SRR576933.out will output some statistics about the mapping in the file SRR576933.out
 ```bash  
 ## Run alignment
-bowtie ~/cours_chipseq/02-Mapping/index/Escherichia_coli_K12 ~/cours_chipseq/data/practical/SRR576933.fastq.gz -v 2 -m 1 -3 1 -S 2> SRR576933.out > SRR576933.sam
+srun bowtie ~/cours_chipseq/02-Mapping/index/Escherichia_coli_K12 ~/cours_chipseq/data/practical/SRR576933.fastq.gz -v 2 -m 1 -3 1 -S 2> SRR576933.out > SRR576933.sam
 ```  
 This should take few minutes as we work with a small genome. For the human genome, we would need either more time and more resources.
 
@@ -296,12 +294,13 @@ Bowtie output is a [SAM](https://samtools.github.io/hts-specs/SAMv1.pdf) file. T
 4. Sort the sam file and create a bam file using samtools
   * -b: output BAM
 ```bash
-samtools sort SRR576933.sam | samtools view -b > SRR576933.bam
+module load samtools/1.9
+srun samtools sort SRR576933.sam | samtools view -b > SRR576933.bam
 ```
 
 5. Create an index for the bam file
 ```bash
-samtools index SRR576933.bam
+srun samtools index SRR576933.bam
 ```
 
 6. Compress the .sam file (you could also delete the file)
@@ -325,7 +324,11 @@ Open the file SRR576938.out. How many reads were mapped?**
 ```bash
 cd ~/cours_chipseq/02-Mapping/IP
 ```
-2. Run Picard markDuplicates to mark duplicated reads (= reads mapping at the exact same location on the genome)
+2. Load picard
+```bash
+module load picard/2.22.0
+```
+3. Run Picard markDuplicates to mark duplicated reads (= reads mapping at the exact same location on the genome)
   * CREATE_INDEX: Create .bai file for the result bam file with marked duplicate reads
   * INPUT: input file name to mark for duplicate reads
   * OUTPUT: output file name
@@ -343,7 +346,7 @@ VALIDATION_STRINGENCY=STRICT
 To determine the number of duplicated reads marked by Picard, we can run the `samtools flagstat` command:
 
 ```bash
-samtools flagstat Marked_SRR576933.bam
+srun samtools flagstat Marked_SRR576933.bam
 ```
 
 
@@ -361,19 +364,19 @@ If the data are on your computer, to prevent data transfer, it's easier to visua
 
 ### 2 - Viewing the raw alignment data in IGV
 1. Download the following files from the server onto your computer
-  * data/Escherichia_coli_K12.fasta
-  * data/Escherichia_coli_K_12_MG1655.annotation.fixed.bed
-  * 02-Mapping/IP/SRR576933.bam
-  * 02-Mapping/IP/SRR576933.bam.bai
-  * 02-Mapping/Control/SRR576938.bam
-  * 02-Mapping/Control/SRR576938.bam.bai
+   * data/Escherichia_coli_K12.fasta
+   * data/Escherichia_coli_K_12_MG1655.annotation.fixed.bed
+   * 02-Mapping/IP/SRR576933.bam
+   * 02-Mapping/IP/SRR576933.bam.bai
+   * 02-Mapping/Control/SRR576938.bam
+   * 02-Mapping/Control/SRR576938.bam.bai
 2. Open IGV on your computer
 3. Load the genome
-  * Genomes / Load Genome from File...
-  * Select the fasta file Escherichia_coli_K12.fasta located into the data directory
+   * Genomes / Load Genome from File...
+   * Select the fasta file Escherichia_coli_K12.fasta located into the data directory
 4. Load an annotation file (genes) into IGV  
-  * File / Load from File...
-  * Select the annotation file: Escherichia_coli_K_12_MG1655.annotation.fixed.bed  The positions of the genes are now loaded.
+   * File / Load from File...
+   * Select the annotation file: Escherichia_coli_K_12_MG1655.annotation.fixed.bed  The positions of the genes are now loaded.
 5. Load the two bam files (SRR576933.bam and SRR576938.bam) in IGV.
 
 **Browse around in the genome. Do you see peaks?**  
@@ -385,7 +388,8 @@ However, looking at BAM file as such does not allow to directly compare the two 
 [bamCoverage](https://deeptools.readthedocs.io/en/latest/content/tools/bamCoverage.html) from deepTools generates BigWigs from BAM files
 1. Try it out
 ```bash
-bamCoverage --help
+module load deeptools/3.2.0
+srun bamCoverage --help
 ```
 2. Create a directory named **03-Visualization** to store bamCoverage outputs
 ```bash
@@ -423,7 +427,7 @@ Your directory structure should be like this:
   * --extendReads 200: Extend reads to fragment size
   * --ignoreDuplicates: reads that have the same orientation and start position will be considered only once
 ```bash
-bamCoverage --bam ~/cours_chipseq/02-Mapping/IP/Marked_SRR576933.bam \
+srun bamCoverage --bam ~/cours_chipseq/02-Mapping/IP/Marked_SRR576933.bam \
 --outFileName SRR576933_nodup.bw --outFileFormat bigwig --effectiveGenomeSize 4639675 \
 --normalizeUsing RPGC --skipNonCoveredRegions --extendReads 200 --ignoreDuplicates
 ```
@@ -452,7 +456,7 @@ cd ~/cours_chipseq
 **Goal**: Define the peaks, i.e. the region with a high density of reads, where the studied factor was bound
 
 ### 1 - Choosing a peak-calling program
-There are multiple programs to perform the peak-calling step. Some are more directed towards histone marks (broad peaks) while others are specific to narrow peaks (transcription factors). Here we will use MACS version 1.4.2 because it's known to produce generally good results, and it is well-maintained by the developer. A new version (MACS2) is available.
+There are multiple programs to perform the peak-calling step. Some are more directed towards histone marks (broad peaks) while others are specific to narrow peaks (transcription factors). Here we will use MACS version 1.4.3 because it's known to produce generally good results, and it is well-maintained by the developer. A new version (MACS2) is available.
 
 ### 2 - Calling the peaks
 1. Create a directory named **04-PeakCalling** to store annotatePeaks outputs
@@ -465,7 +469,8 @@ cd 04-PeakCalling
 ```
 3. Try out MACS
 ```bash
-macs
+module load macs/1.4.3
+srun macs
 ```
 This prints the help of the program.
 
@@ -481,7 +486,8 @@ This prints the help of the program.
   * --diag is optional and increases the running time. It tests the saturation of the dataset, and gives an idea of how many peaks are found with subsets of the initial dataset.
   * &> MACS.out will output the verbosity (=information) in the file MACS.out
 ```bash
-macs -t ~/cours_chipseq/02-Mapping/IP/SRR576933.bam -c ~/cours_chipseq/02-Mapping/Control/SRR576938.bam --format BAM  --gsize 4639675 \
+srun macs -t ~/cours_chipseq/02-Mapping/IP/SRR576933.bam -c ~/cours_chipseq/02-Mapping/Control/SRR576938.bam \
+--format BAM  --gsize 4639675 \
 --name "FNR_Anaerobic_A" --bw 400 --diag &> MACS.out
 ```
 3. This should take a few minutes, mainly because of the --diag option. Without, the program runs faster.
