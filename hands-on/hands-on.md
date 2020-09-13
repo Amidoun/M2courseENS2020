@@ -235,6 +235,17 @@ srun bowtie-build ~/cours_chipseq/data/practical/Escherichia_coli_K12.fasta Esch
 ```bash
 cd ~/cours_chipseq/02-Mapping
 ```
+7. Using `tree`, you should the bowtie's index files
+```bash
+.
+└── index
+    ├── Escherichia_coli_K12.1.ebwt
+    ├── Escherichia_coli_K12.2.ebwt
+    ├── Escherichia_coli_K12.3.ebwt
+    ├── Escherichia_coli_K12.4.ebwt
+    ├── Escherichia_coli_K12.rev.1.ebwt
+    └── Escherichia_coli_K12.rev.2.ebwt
+```
 
 ### 4 - Mapping the experiment
 1. Create a directory named **IP** in which to put mapping results for IP
