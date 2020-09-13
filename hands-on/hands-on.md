@@ -282,7 +282,7 @@ Your directory structure should be like this:
 ## Run alignment
 srun bowtie ~/cours_chipseq/02-Mapping/index/Escherichia_coli_K12 ~/cours_chipseq/data/practical/SRR576933.fastq.gz -v 2 -m 1 -3 1 -S 2> SRR576933.out > SRR576933.sam
 ```  
-This should take few minutes as we work with a small genome. For the human genome, we would need either more time and more resources.
+This should take few minutes (~2 min) as we work with a small genome. For the human genome, we would need either more time and more resources.
 
 Bowtie output is a [SAM](https://samtools.github.io/hts-specs/SAMv1.pdf) file. The SAM format correspond to large text files, that can be compressed ("zipped") into BAM format. The BAM files are usually sorted and indexed for fast access to the data it contains. The index of a given bam file is names .bam.bai or .bai file. Some tools require to have the index of the bam file to process it.
 
