@@ -98,7 +98,7 @@ cp -r /shared/projects/ens_hts_2020/Chip-seq/data .
  ```
 /shared/home/<login>/cours_chipseq
 └── data
-    ├── bowtie.sbach
+    ├── bowtie.sbatch
     └── practical
         ├── Escherichia_coli_K12.fasta
         ├── Escherichia_coli_K_12_MG1655.annotation.fixed.bed
@@ -126,7 +126,7 @@ Your directory structure should be like this
 .
 ├── 01-QualityControl <- you should be in this folder
 └── data
-    ├── bowtie.slurm
+    ├── bowtie.sbatch
     └── practical
         ├── Escherichia_coli_K12.fasta
         ├── Escherichia_coli_K_12_MG1655.annotation.fixed.bed
