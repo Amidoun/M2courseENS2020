@@ -98,15 +98,7 @@ cp -r /shared/projects/ens_hts_2020/Chip-seq/data .
  ```
 /shared/home/<login>/cours_chipseq
 └── data
-    ├── bowtie.slurm
-    ├── mouse_index
-    │   ├── make_mm9.sh
-    │   ├── mm9.1.ebwt
-    │   ├── mm9.2.ebwt
-    │   ├── mm9.3.ebwt
-    │   ├── mm9.4.ebwt
-    │   ├── mm9.rev.1.ebwt
-    │   └── mm9.rev.2.ebwt
+    ├── bowtie.sbach
     └── practical
         ├── Escherichia_coli_K12.fasta
         ├── Escherichia_coli_K_12_MG1655.annotation.fixed.bed
@@ -135,14 +127,6 @@ Your directory structure should be like this
 ├── 01-QualityControl <- you should be in this folder
 └── data
     ├── bowtie.slurm
-    ├── mouse_index
-    │   ├── make_mm9.sh
-    │   ├── mm9.1.ebwt
-    │   ├── mm9.2.ebwt
-    │   ├── mm9.3.ebwt
-    │   ├── mm9.4.ebwt
-    │   ├── mm9.rev.1.ebwt
-    │   └── mm9.rev.2.ebwt
     └── practical
         ├── Escherichia_coli_K12.fasta
         ├── Escherichia_coli_K_12_MG1655.annotation.fixed.bed
@@ -270,8 +254,8 @@ Your directory structure should be like this:
 └───01-QualityControl
 │   
 └───02-Mapping
-|    └───index
-|    └───IP
+     └───index
+     └───IP
 ```
 
 
