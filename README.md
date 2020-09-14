@@ -1,4 +1,4 @@
-# M2 Epigenomics course ENS 2019
+# M2 Epigenomics course ENS 2020
 
 ## Practical ChIP-seq Analysis
 
