@@ -1,4 +1,4 @@
-# Analyze motifs with RSAT 2019
+# Analyze motifs with RSAT 2020
 
 
 ## Motif analysis <a name="motif"></a>
