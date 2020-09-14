@@ -1,4 +1,4 @@
-# ChIP-seq Practical 2019
+# ChIP-seq Practical 2020
 
 
 1. [Introduction](#introduction)  
