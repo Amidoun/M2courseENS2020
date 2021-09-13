@@ -142,7 +142,7 @@ module load fastqc/0.11.8
 srun fastqc --help
 ```
 4. Launch the FASTQC program on the experiment file (SRR576933.fastq.gz)
-  * -o: creates all output files in the specified output directory. '.' means current directory.
+  * -o: creates all output files in the specified output directory. '.' means current directory (so the dot is important).
 ```bash
 srun fastqc ~/cours_chipseq/data/practical/SRR576933.fastq.gz -o .
 ```  
