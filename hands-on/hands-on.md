@@ -152,16 +152,18 @@ ls
 ```
 > SRR576933_fastqc.html  SRR576933_fastqc.zip
 
-6. Download the HTML file SRR576933_fastqc.html on your local machine (either with ssh or the program you used to upload your data on the server). Using a bash command it would look like this.
+6. Download the HTML file SRR576933_fastqc.html on your LOCAL machine (either with ssh or the program you used to upload your data on the server). Using a bash command it would look like this.
 ```bash
+
 ### OPEN A NEW TERMINAL
+
 ## Create a directory where to put generated files on your computer
 mkdir ~/Desktop/cours_chipseq
 
 ## Go to the location on your computer, where you want to put the data, for example:
 cd ~/Desktop/cours_chipseq
 
-## Download the file
+## Download the file (do not forget the dot)
 scp <login>@core.cluster.france-bioinformatique.fr:~/cours_chipseq/01-QualityControl/SRR576933_fastqc.html .
 # Enter your password
 ```
