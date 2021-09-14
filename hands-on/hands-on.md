@@ -284,7 +284,7 @@ Your directory structure should be like this:
   * 2> SRR576933.out will output some statistics about the mapping in the file SRR576933.out
 ```bash  
 ## Run alignment
-srun bowtie ~/cours_chipseq/02-Mapping/index/Escherichia_coli_K12 ~/cours_chipseq/data/practical/SRR576933.fastq.gz -v 2 -m 1 -3 1 -S 2> SRR576933.out > SRR576933.sam
+srun bowtie ~/cours_chipseq/02-Mapping/index/Escherichia_coli_K12 ~/cours_chipseq/data/practical/SRR576933.fastq -v 2 -m 1 -3 1 -S 2> SRR576933.out > SRR576933.sam
 ```  
 This should take few minutes (~2 min) as we work with a small genome. For the human genome, we would need either more time and more resources.
 
