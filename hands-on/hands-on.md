@@ -92,7 +92,7 @@ cd cours_chipseq
 ```
 4. Copy the directory containing data for the practical. This creates a new folder named "practical" in your personal space 
 ```bash
-cp -r /shared/projects/ens_hts_2021/Chip-seq/Chip-seq/data 
+cp -r /shared/projects/ens_hts_2021/Chip-seq/Chip-seq/data .
 or
 cp -r /shared/projects/ens_hts_2021/Chip-seq/Chip-seq/data shared/home/<login>/cours_chipseq.
 ```
