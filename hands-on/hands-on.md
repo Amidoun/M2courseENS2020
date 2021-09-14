@@ -379,7 +379,6 @@ If the data are on your computer, to prevent data transfer, it's easier to visua
 5. Load the two bam files (SRR576933.bam and SRR576938.bam) in IGV.
 
 **Browse around in the genome. Do you see peaks?**  
-**Browse into IGV. Go to the following genes: b1127, b1108**
 
 However, looking at BAM file as such does not allow to directly compare the two samples as data are not normalized. Let's generate normalized data for visualization.
 
@@ -439,8 +438,7 @@ srun bamCoverage --bam ~/cours_chipseq/02-Mapping/IP/Marked_SRR576933.bam \
   * Select the two bigwig files.
 8. Set the visualization of the two bigwig files to the same range
   * Click right on the name of the tracks and select **Set data range**, put the value 4 
-
-**Go back to the genes we looked at earlier: b1127, b1108. Look at the shape of the signal.**  
+ 
 **Keep IGV opened.**
 
 Go back to working home directory (i.e /shared/home/login/cours_chipseq)
