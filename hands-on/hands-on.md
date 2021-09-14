@@ -132,8 +132,8 @@ Your directory structure should be like this
     └── practical
         ├── Escherichia_coli_K12.fasta
         ├── Escherichia_coli_K_12_MG1655.annotation.fixed.bed
-        ├── SRR576933.fastq.gz
-        └── SRR576938.fastq.gz
+        ├── SRR576933.fastq
+        └── SRR576938.fastq
 ```
 3. Check the help page of the program to see its usage and parameters.
 
@@ -141,10 +141,10 @@ Your directory structure should be like this
 module load fastqc/0.11.8
 srun fastqc --help
 ```
-4. Launch the FASTQC program on the experiment file (SRR576933.fastq.gz)
+4. Launch the FASTQC program on the experiment file (SRR576933.fastq)
   * -o: creates all output files in the specified output directory. '.' means current directory (so the dot is important).
 ```bash
-srun fastqc ~/cours_chipseq/data/practical/SRR576933.fastq.gz -o .
+srun fastqc ~/cours_chipseq/data/practical/SRR576933.fastq -o .
 ```  
 5. Wait until the analysis is finished. Check the files output by the program.
 ```bash
