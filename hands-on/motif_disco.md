@@ -41,7 +41,7 @@ For the motif analysis, you first need to extract the sequences corresponding to
 
 ## Compare with an existing database
 
-5. You can also compare the discovered motifs with existing databases. In our case we'll use Jaspr non redundant database (see below).
+5. You can also compare the discovered motifs with existing databases. In our case we'll use Jaspr non redundant vertebrates database (see below).
 
 6. <img width="1148" alt="Jaspr" src="https://user-images.githubusercontent.com/85832376/133495424-40090c84-60ba-4b62-b542-2daeb6eb98fe.png">
 
