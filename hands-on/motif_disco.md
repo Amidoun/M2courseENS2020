@@ -25,7 +25,8 @@ For the motif analysis, you first need to extract the sequences corresponding to
   *  open the panel **Reference from which the sequences should be fetched**
   *  Add 50bp upstream and downstream. You will obtain sequences of 100bp (summit +/- 50bp)
 ![screenshot](/images/10_fetch_sequences.png)
-  
+ 
+ 
   
 ### Motif discovery with RSAT
 
@@ -37,9 +38,20 @@ For the motif analysis, you first need to extract the sequences corresponding to
   * Open the "Reduce peak sequences" title, and make sure the "Cut peak sequences: +/- " option is set to 0 (= we wish to analyze our full dataset)
   * Open the “Motif Discovery parameters” title, and check the oligomer sizes 6 (but not 7 or 8). 
   * Under “Compare discovered motifs with databases”, Keep the default
-5. You can indicate your email address in order to receive notification of the task submission and completion. This is particularly useful because the full analysis may take some time for very large datasets.
-6. Click “GO”. As soon as the query has been launched, you should receive an email indicating confirming the task submission, and providing a link to the future result page.
-7. The Web page also displays a link, You can already click on this link. The report will be progressively updated during the processing of the workflow.
+
+## Compare with an existing database
+
+5. You can also compare the discovered motifs with existing databases. In our case we'll use Jaspr non redundant database (see below).
+
+6. <img width="1148" alt="Jaspr" src="https://user-images.githubusercontent.com/85832376/133495424-40090c84-60ba-4b62-b542-2daeb6eb98fe.png">
+
+
+
+7. You can indicate your email address in order to receive notification of the task submission and completion. This is particularly useful because the full analysis may take some time for very large datasets.
+
+8. Click “GO”. As soon as the query has been launched, you should receive an email indicating confirming the task submission, and providing a link to the future result page.
+9. 
+10. The Web page also displays a link, You can already click on this link. The report will be progressively updated during the processing of the workflow.
 
 ### Analyzing the results
 The [published protocol](https://www.nature.com/articles/nprot.2012.088) accessible on the cloud provides additional information about the algorithms (see the blue BOXES), as well as guidance to interpret the results (section: ANTICIPATED RESULTS). Additional information regarding motifs found in Oct4 dataset is available in the [publication of peak-motifs](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3287167/)
