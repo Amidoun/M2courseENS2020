@@ -41,8 +41,7 @@ For the motif analysis, you first need to extract the sequences corresponding to
 
 5. You can also compare the discovered motifs with existing databases. In our case we'll use Jaspr non redundant vertebrates database (see below).
 
-6. <img width="1148" alt="Jaspr" src="https://user-images.githubusercontent.com/85832376/133495424-40090c84-60ba-4b62-b542-2daeb6eb98fe.png">
-
+ <img width="1148" alt="Jaspr" src="https://user-images.githubusercontent.com/85832376/133495424-40090c84-60ba-4b62-b542-2daeb6eb98fe.png">
 
 
 7. You can indicate your email address in order to receive notification of the task submission and completion. This is particularly useful because the full analysis may take some time for very large datasets.
